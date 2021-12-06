@@ -8,6 +8,7 @@ package discovery
 
 import (
 	"context"
+	"github.com/hyperledger/fabric-protos-go/peer"
 	"sync"
 
 	"github.com/hyperledger/fabric-protos-go/discovery"
@@ -113,7 +114,7 @@ func (cr *channelResponse) Config() (*discovery.ConfigResult, error) {
 }
 
 // Peers returns a response for a peer membership query, or error if something went wrong
-func (cr *channelResponse) Peers(invocationChain ...*discovery.ChaincodeCall) ([]*discclient.Peer, error) {
+func (cr *channelResponse) Peers(invocationChain ...*peer.ChaincodeCall) ([]*discclient.Peer, error) {
 	return cr.peers, cr.err
 }
 
