@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric-protos-go/common"
-	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/status"
-	"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
-	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
+	"github.com/ArkTree/fabric-sdk-go/pkg/common/errors/status"
+	"github.com/ArkTree/fabric-sdk-go/pkg/common/logging"
+	"github.com/ArkTree/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/pkg/errors"
 )
 
