@@ -13,13 +13,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/pkg/errors"
 
-	"github.com/hyperledger/fabric-protos-go/common"
-	pb "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/ArkTree/fabric-sdk-go/internal/github.com/hyperledger/fabric/protoutil"
 	"github.com/ArkTree/fabric-sdk-go/pkg/common/errors/multi"
 	contextApi "github.com/ArkTree/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/ArkTree/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/ArkTree/fabric-sdk-go/pkg/context"
+	"github.com/hyperledger/fabric-protos-go/common"
+	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
 
 // CreateChaincodeInvokeProposal creates a proposal for transaction.
@@ -40,17 +40,20 @@ func CreateChaincodeInvokeProposal(txh fab.TransactionHeader, request fab.Chainc
 	}
 
 	// create invocation spec to target a chaincode with arguments
-	ccis := &pb.ChaincodeInvocationSpec{ChaincodeSpec: &pb.ChaincodeSpec{
-		Type: request.Lang, ChaincodeId: &pb.ChaincodeID{Name: request.ChaincodeID},
-		Input: &pb.ChaincodeInput{Args: argsArray, IsInit: request.IsInit}}}
+	ccis := &pb.ChaincodeInvocationSpec{
+		ChaincodeSpec: &pb.ChaincodeSpec{
+			Type: request.Lang, ChaincodeId: &pb.ChaincodeID{Name: request.ChaincodeID},
+			Input: &pb.ChaincodeInput{Args: argsArray, IsInit: request.IsInit},
+		},
+	}
 
-	proposal, _, err := protoutil.CreateChaincodeProposalWithTxIDNonceAndTransient(string(txh.TransactionID()), common.HeaderType_ENDORSER_TRANSACTION, txh.ChannelID(), ccis, txh.Nonce(), txh.Creator(), request.TransientMap)
+	proposal, txID, err := protoutil.CreateChaincodeProposalWithTxIDAndTransient(common.HeaderType_ENDORSER_TRANSACTION, txh.ChannelID(), ccis, txh.Creator(), string(txh.TransactionID()), request.TransientMap)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create chaincode proposal")
 	}
 
 	tp := fab.TransactionProposal{
-		TxnID:    txh.TransactionID(),
+		TxnID:    fab.TransactionID(txID),
 		Proposal: proposal,
 	}
 

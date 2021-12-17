@@ -9,11 +9,11 @@ package resource
 import (
 	reqContext "context"
 
+	"github.com/ArkTree/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/golang/protobuf/proto"
 	"github.com/hyperledger/fabric-protos-go/common"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 	lb "github.com/hyperledger/fabric-protos-go/peer/lifecycle"
-	"github.com/ArkTree/fabric-sdk-go/pkg/common/providers/context"
 	"github.com/pkg/errors"
 
 	"github.com/ArkTree/fabric-sdk-go/pkg/common/errors/retry"
@@ -399,7 +399,7 @@ func (lc *Lifecycle) CreateApproveProposal(txh fab.TransactionHeader, req *Appro
 		Source:              ccsrc,
 	}
 
-	argsBytes, err := lc.protoMarshal(args)
+	argsBytes, err := proto.Marshal(args)
 	if err != nil {
 		return nil, err
 	}
